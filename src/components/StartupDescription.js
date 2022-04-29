@@ -6,12 +6,26 @@ import {Button} from 'react-bootstrap';
 
 
 export default function StartupDescription(props) {
-    const location = useLocation();
+    const location = useLocation();    
     const data = location.state.data;
-    console.log(location);
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+    
+    console.log("funding ", data.funding_round);
+    const displayData = data.funding_round.slice(0,5).map((fund,index) => {
+        return(
+            <>
+            <p><span style={{fontWeight: "bold"}}>{index+1})</span>
+            {fund["funding amount"] && <><span style={{fontWeight: "bold"}}> Fund:</span> {fund["funding amount"]}</> }
+            {fund["Series Name"] && <>,<span style={{fontWeight: "bold"}}> Series:</span> {fund["Series Name"]}</>}
+            {fund["Date"] && <>,<span style={{fontWeight: "bold"}}> Date:</span> {fund["Date"]}</>}
+            {fund["Investors"] && <>,<span style={{fontWeight: "bold"}}> Investors:</span> {fund["Investors"]}</>}
+            .</p>
+            </>
+        );
+    });
+
     return (
         <>
             <NavBarComponent />
@@ -32,8 +46,8 @@ export default function StartupDescription(props) {
                       {data.no_of_emp &&  <h5><span style={{ color:"royalblue"}} > No. of employees:</span> {data.no_of_emp}</h5>}
                       {data.sector &&  <h5><span style={{ color:"royalblue"}} > Sector:</span> {data.sector}</h5>}
                       {data.business_model &&  <h5><span style={{ color:"royalblue"}} > Business Model:</span> {data.business_model}</h5>}
-                      {data.funding_round.length!==0 &&  <h5><span style={{ color:"royalblue"}} > Funding Round:</span> {data.funding_round}</h5>}
-                      <Button href = {data.link} variant="primary" target="_blank" >Visit Site</Button>
+                      {data.funding_round.length!==0 &&  <><h5 style={{ color:"royalblue"}}>Recent Funding Round:</h5> {displayData}</>}
+                       <Button href = {data.link} variant="primary" target="_blank" >Visit Site</Button>
                     </div>
                 </div>
             </div>
